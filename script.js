@@ -790,7 +790,7 @@ async function loadAdminData() {
 
         const { data: withdrawals, error: withError } = await supabaseClient
             .from('withdrawals')
-            .select('*, users(username)');
+            .select('*, users(username, currency)');
 
         if (withError) throw withError;
         populateWithdrawalsTable(withdrawals);
@@ -881,7 +881,7 @@ function populateWithdrawalsTable(withdrawals) {
         row.innerHTML = `
             <td>${withd.id}</td>
             <td>${withd.users?.username || 'N/A'}</td>
-            <td>${getCurrencySymbol(withd.currency)}${withd.requested_amount}</td>
+            <td>${getCurrencySymbol(withd.users?.currency || 'RM')}${withd.requested_amount}</td>
             <td>${withd.status}</td>
             <td>${new Date(withd.request_date).toLocaleDateString()}</td>
             <td>${actions}</td>
@@ -1564,7 +1564,7 @@ async function loadWithdrawalHistoryForPage() {
     try {
         const { data: withdrawals, error } = await supabaseClient
             .from('withdrawals')
-            .select('*')
+            .select('*, users(currency)')
             .eq('user_id', currentUser.id)
             .order('request_date', { ascending: false })
             .limit(20);
@@ -1589,12 +1589,14 @@ async function loadWithdrawalHistoryForPage() {
                              withdrawal.status === 'pending' ? '⏳' :
                              withdrawal.status === 'fee_required' ? '💰' : '❌';
 
+            const currency = withdrawal.users?.currency || currentUser.currency || 'RM';
+
             html += `
                 <div class="withdrawal-item" style="background: rgba(255,255,255,0.05); padding: 1.5rem; margin-bottom: 1rem; border-radius: 12px; border-left: 4px solid ${statusColor};">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
-                            <h4 style="margin: 0 0 0.5rem 0; color: #FFD700;">${getCurrencySymbol(withdrawal.currency)}${withdrawal.requested_amount}</h4>
-                            ${withdrawal.fee_required ? `<p style="margin: 0.5rem 0; color: #FF9800;">Fee Required: ${getCurrencySymbol(withdrawal.currency)}${withdrawal.fee_required}</p>` : ''}
+                            <h4 style="margin: 0 0 0.5rem 0; color: #FFD700;">${getCurrencySymbol(currency)}${withdrawal.requested_amount}</h4>
+                            ${withdrawal.fee_required ? `<p style="margin: 0.5rem 0; color: #FF9800;">Fee Required: ${getCurrencySymbol(currency)}${withdrawal.fee_required}</p>` : ''}
                             <small style="color: #B0B0B0;">${new Date(withdrawal.request_date).toLocaleDateString()}</small>
                         </div>
                         <div style="text-align: right;">
@@ -1605,7 +1607,7 @@ async function loadWithdrawalHistoryForPage() {
                     </div>
                     ${withdrawal.status === 'fee_required' ?
                         `<div style="margin-top: 1rem;">
-                            <button class="btn" onclick="payWithdrawalFee('${withdrawal.id}')" style="font-size: 0.9rem;">Pay Fee ${getCurrencySymbol(withdrawal.currency)}${withdrawal.fee_required}</button>
+                            <button class="btn" onclick="payWithdrawalFee('${withdrawal.id}')" style="font-size: 0.9rem;">Pay Fee ${getCurrencySymbol(currency)}${withdrawal.fee_required}</button>
                         </div>` : ''}
                 </div>
             `;
@@ -1686,7 +1688,6 @@ async function handleWithdrawal(e) {
         await supabaseClient.from('withdrawals').insert({
             user_id: currentUser.id,
             requested_amount: amount,
-            currency: currentUser.currency || 'RM',
             status: 'pending',
             request_date: new Date().toISOString()
         });
@@ -1841,8 +1842,125 @@ async function handleAdminLogin(e) {
 
 
 
+// Check maintenance mode for user pages
+async function checkMaintenanceMode() {
+    // Skip maintenance check for admin pages
+    if (window.location.pathname.includes('admin')) {
+        return;
+    }
+
+    try {
+        const { data: settings, error } = await supabaseClient
+            .from('platform_settings')
+            .select('setting_value')
+            .eq('setting_key', 'platform_status')
+            .single();
+
+        if (error) {
+            console.error('Error checking maintenance mode:', error);
+            return;
+        }
+
+        if (settings && settings.setting_value === 'maintenance') {
+            showMaintenancePage();
+            return true; // In maintenance mode
+        }
+    } catch (err) {
+        console.error('Error checking maintenance mode:', err);
+    }
+    return false; // Not in maintenance mode
+}
+
+// Show maintenance mode page
+function showMaintenancePage() {
+    document.body.innerHTML = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Maintenance - Wealth Grow</title>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: 'Poppins', sans-serif;
+                    background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+                    color: #fff;
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .maintenance-container {
+                    text-align: center;
+                    padding: 2rem;
+                    max-width: 600px;
+                }
+                .maintenance-icon {
+                    font-size: 5rem;
+                    margin-bottom: 2rem;
+                    opacity: 0.8;
+                }
+                h1 {
+                    font-size: 2.5rem;
+                    margin-bottom: 1rem;
+                    color: #FFD700;
+                }
+                p {
+                    font-size: 1.2rem;
+                    margin-bottom: 2rem;
+                    line-height: 1.6;
+                }
+                .maintenance-message {
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 1.5rem;
+                    border-radius: 10px;
+                    margin-bottom: 2rem;
+                }
+                .contact-info {
+                    font-size: 0.9rem;
+                    opacity: 0.8;
+                }
+                .contact-info a {
+                    color: #FFD700;
+                    text-decoration: none;
+                }
+                .contact-info a:hover {
+                    text-decoration: underline;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="maintenance-container">
+                <div class="maintenance-icon">🔧</div>
+                <h1>Under Maintenance</h1>
+                <div class="maintenance-message">
+                    <p>We are currently performing scheduled maintenance to improve your experience.</p>
+                    <p>Please check back soon. We apologize for any inconvenience.</p>
+                </div>
+                <div class="contact-info">
+                    <p>For urgent inquiries, contact our support team.</p>
+                    <p><a href="mailto:support@wealthgrow.com">support@wealthgrow.com</a></p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+}
+
 // DOM ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Check maintenance mode first for user pages
+    const isMaintenance = await checkMaintenanceMode();
+    if (isMaintenance) {
+        return; // Stop loading if in maintenance mode
+    }
+
     // Show loading animation
     showPageLoader();
 
