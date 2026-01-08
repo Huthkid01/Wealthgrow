@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin login portal for Wealth Grow investment platform. Authorized personnel only.">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Administrator Login - Wealth Grow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Wealth Grow</div>
+            <div class="hamburger" id="hamburger">
+                <svg class="hamburger-svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" fill="#FFD700"/>
+                </svg>
+                <svg class="x-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="#FFD700"/>
+                </svg>
+            </div>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <section class="login-section">
+            <h1>Admin Login</h1>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-email">Email:</label>
+                    <input type="email" id="admin-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="admin-password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('admin-password')">👁️</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p id="admin-error-message" class="error"></p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; <span id="current-year"></span> Wealth Grow. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

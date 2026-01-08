@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Wealth Grow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Wealth Grow</div>
+            <div class="hamburger" id="hamburger">
+                <svg class="hamburger-svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" fill="#FFD700"/>
+                </svg>
+                <svg class="x-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="#FFD700"/>
+                </svg>
+            </div>
+            <ul>
+                <li><a href="admin.html">Admin</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="#" onclick="switchToTabMobile('dashboard')">Dashboard</a></li>
+                <li><a href="#" onclick="switchToTabMobile('users')">Users</a></li>
+                <li><a href="#" onclick="switchToTabMobile('investments')">Investments</a></li>
+                <li><a href="#" onclick="switchToTabMobile('withdrawals')">Withdrawals</a></li>
+                <li><a href="#" onclick="switchToTabMobile('reports')">Reports</a></li>
+                <li><a href="#" onclick="switchToTabMobile('settings')">Settings</a></li>
+                <li><a href="#" id="mobile-logout">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <section class="admin-section">
+            <h1>Admin Panel</h1>
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="users">Users</button>
+                <button class="tab-btn" data-tab="investments">Investments</button>
+                <button class="tab-btn" data-tab="withdrawals">Withdrawals</button>
+                <button class="tab-btn" data-tab="reports">Reports</button>
+                <button class="tab-btn" data-tab="settings">Settings</button>
+            </div>
+            <div id="dashboard-tab" class="tab-content active">
+                <h2>Admin Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h3>Total Users</h3>
+                        <p id="total-users">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Active Investments</h3>
+                        <p id="active-investments">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Pending Withdrawals</h3>
+                        <p id="pending-withdrawals">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Total Profits</h3>
+                        <p id="total-profits">$0</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Platform Overview</h3>
+                    <canvas id="admin-chart"></canvas>
+                </div>
+            </div>
+            <div id="users-tab" class="tab-content">
+                <h2>Manage Users</h2>
+
+                <!-- Create New User Form -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3>Create New User</h3>
+                    <form id="create-user-form">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div class="form-group">
+                                <label for="new-name">Full Name:</label>
+                                <input type="text" id="new-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-username">Username:</label>
+                                <input type="text" id="new-username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">Password:</label>
+                                <div class="password-container">
+                                    <input type="password" id="new-password" required>
+                                    <button type="button" class="password-toggle" onclick="togglePassword('new-password')">👁️</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone:</label>
+                                <input type="tel" id="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="currency">Currency:</label>
+                                <select id="currency" required>
+                                    <option value="RM">Malaysian Ringgit (RM)</option>
+                                    <option value="USD">US Dollar (USD)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="invested-amount">Invested Amount:</label>
+                                <input type="number" id="invested-amount" min="1" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank-name">Bank Name:</label>
+                                <input type="text" id="bank-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-number">Account Number:</label>
+                                <input type="text" id="account-number">
+                            </div>
+                            <div class="form-group">
+                                <label for="account-name">Account Holder Name:</label>
+                                <input type="text" id="account-name" placeholder="Full name on bank account">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn" style="margin-top: 1rem;">Create User</button>
+                    </form>
+                    <div id="create-user-message" style="margin-top: 1rem; color: #4CAF50;"></div>
+                </div>
+
+                <!-- Users Table -->
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Invested</th>
+                            <th>Target</th>
+                            <th>Balance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <!-- User Profile Modal -->
+                <div id="user-profile-modal" class="modal">
+                    <div class="modal-content" style="max-width: 800px;">
+                        <span class="close" onclick="closeUserProfile()">&times;</span>
+                        <h2>User Profile: <span id="profile-username"></span></h2>
+                        <div class="profile-details">
+                            <div class="profile-section">
+                                <h3>User Information</h3>
+                                <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                                <p><strong>Username:</strong> <span id="profile-username-display"></span></p>
+                                <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                                <p><strong>Phone:</strong> <span id="profile-phone"></span></p>
+                                <p><strong>Currency:</strong> <span id="profile-currency"></span></p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Investment Details</h3>
+                                <p><strong>Invested Amount:</strong> <span id="profile-currency-symbol">RM</span><span id="profile-invested-amount"></span></p>
+                                <p><strong>Target Amount:</strong> <span id="profile-currency-symbol-target">RM</span><span id="profile-target-amount"></span></p>
+                                <p><strong>Current Balance:</strong> <span id="profile-currency-symbol-balance">RM</span><span id="profile-current-balance"></span></p>
+                                <p><strong>Total Earnings:</strong> <span id="profile-currency-symbol-earnings">RM</span><span id="profile-total-earnings"></span></p>
+                                <p><strong>Created:</strong> <span id="profile-created-at"></span></p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Bank Details</h3>
+                                <p><strong>Bank Name:</strong> <span id="profile-bank-name">Not provided</span></p>
+                                <p><strong>Account Number:</strong> <span id="profile-account-number">Not provided</span></p>
+                                <p><strong>Account Name:</strong> <span id="profile-account-name">Not provided</span></p>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Update User Balance</h3>
+                                <div class="form-group">
+                                    <label for="balance-adjustment-type">Adjustment Type:</label>
+                                    <select id="balance-adjustment-type">
+                                        <option value="add">Add to Balance</option>
+                                        <option value="subtract">Subtract from Balance</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="balance-adjustment-amount">Amount:</label>
+                                    <input type="number" id="balance-adjustment-amount" min="0.01" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="balance-adjustment-reason">Reason:</label>
+                                    <textarea id="balance-adjustment-reason" rows="2" placeholder="Reason for adjustment"></textarea>
+                                </div>
+                                <button class="btn" onclick="adjustUserBalance()">Adjust Balance</button>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Investment History</h3>
+                                <div id="user-investments-list">
+                                    <!-- Investments will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="profile-section">
+                                <h3>Withdrawal History</h3>
+                                <div id="user-withdrawals-list">
+                                    <!-- Withdrawals will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="investments-tab" class="tab-content">
+                <h2>Manage Investments</h2>
+                <table id="investments-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="withdrawals-tab" class="tab-content">
+                <h2>Manage Withdrawals</h2>
+                <table id="withdrawals-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="reports-tab" class="tab-content">
+                <h2>Generate Reports</h2>
+                <button id="generate-report" class="btn">Generate Investment Report</button>
+                <div id="report-output"></div>
+            </div>
+            <div id="settings-tab" class="tab-content">
+                <h2>System Settings</h2>
+                <div class="settings-grid">
+                    <div class="card">
+                        <h3>Platform Fees</h3>
+                        <label>Withdrawal Fee (%):</label>
+                        <input type="number" id="withdrawal-fee" value="5" step="0.1">
+                        <button class="btn" onclick="updateSettings()">Update</button>
+                    </div>
+                    <div class="card">
+                        <h3>Investment Products</h3>
+                        <label>Minimum Investment:</label>
+                        <input type="number" id="min-investment" value="100">
+                        <label>Maximum Investment:</label>
+                        <input type="number" id="max-investment" value="10000">
+                        <button class="btn" onclick="updateProducts()">Update</button>
+                    </div>
+                    <div class="card">
+                        <h3>System Status</h3>
+                        <p>Platform Status: <span id="platform-status">Active</span></p>
+                        <button class="btn" onclick="togglePlatform()">Toggle Maintenance</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; <span id="current-year"></span> Wealth Grow. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

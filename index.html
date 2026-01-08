@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wealth Grow - Professional investment platform offering secure 10x returns on stocks and crypto investments with transparent profit growth.">
+    <meta name="keywords" content="investment, wealth, stocks, crypto, 10x returns, secure investment, profit growth">
+    <meta name="author" content="Wealth Grow">
+    <title>Wealth Grow - Professional Investment Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header role="banner">
+        <nav role="navigation" aria-label="Main navigation">
+            <div class="logo">Wealth Grow</div>
+            <div class="nav-right">
+                <div class="language-selector">
+                    <button class="lang-btn" id="current-lang" aria-label="Select language" aria-haspopup="true">
+                        <i class="fas fa-globe" aria-hidden="true"></i>
+                        <span>EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" class="lang-option" data-lang="en">
+                            <span class="flag">🇺🇸</span>
+                            <span class="lang-text">English</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ms">
+                            <span class="flag">🇲🇾</span>
+                            <span class="lang-text">Bahasa Melayu</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ta">
+                            <span class="flag">🇮🇳</span>
+                            <span class="lang-text">தமிழ் (Tamil)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hamburger" id="hamburger" role="button" aria-label="Toggle mobile menu" tabindex="0">
+                    <svg class="hamburger-svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" fill="#FFD700"/>
+                    </svg>
+                    <svg class="x-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="#FFD700"/>
+                    </svg>
+                </div>
+            </div>
+            <ul>
+                <li><a href="index.html" >Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </div>
+    </header>
+    <main role="main" id="main-content">
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+            <h1>Welcome to Wealth Grow</h1>
+            <p>Grow your wealth with secure investments in stocks and crypto. Professional management and transparent profits.</p>
+                <a href="login.html" class="btn">Get Started</a>
+            </div>
+        </section>
+        <section class="features">
+            <h2>Why Choose Wealth Grow?</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Secure Investments</h3>
+                    <p>Bank-grade security for all your investments.</p>
+                </div>
+                <div class="feature">
+                    <h3>High Returns</h3>
+                    <p>Competitive profit growth on your investments.</p>
+                </div>
+                <div class="feature">
+                    <h3>Easy Withdrawals</h3>
+                    <p>Withdraw your matured investments seamlessly.</p>
+                </div>
+            </div>
+        </section>
+        <section class="approval-section">
+            <div class="approval-card">
+                <div class="approval-icon">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                </div>
+                <div class="approval-content">
+                    <h3>Government Approved Investment</h3>
+                    <p>Investment is approved by Malaysian Government</p>
+                    <div class="approval-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Official Registration</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="login.html">Login</a>
+                <a href="help.html">Help</a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Wealth Grow. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                // Navigation
+                home: "Home",
+                login: "Login",
+                help: "Help",
+
+                // Hero Section
+                welcomeTitle: "Welcome to Wealth Grow",
+                welcomeDesc: "Grow your wealth with secure investments in stocks and crypto. Professional management and transparent profits.",
+                getStarted: "Get Started",
+
+                // Features Section
+                whyChoose: "Why Choose Wealth Grow?",
+                secureInvestments: "Secure Investments",
+                secureDesc: "Bank-grade security for all your investments.",
+                highReturns: "High Returns",
+                returnsDesc: "Competitive profit growth on your investments.",
+                easyWithdrawals: "Easy Withdrawals",
+                withdrawalsDesc: "Withdraw your matured investments seamlessly.",
+
+                // Government Approval
+                govtApproved: "Government Approved Investment",
+                govtDesc: "Investment is approved by Malaysian Government",
+                officialReg: "Official Registration",
+
+                // Footer
+                copyright: "Wealth Grow. All rights reserved."
+            },
+            ms: {
+                // Navigation
+                home: "Laman Utama",
+                login: "Log Masuk",
+                help: "Bantuan",
+
+                // Hero Section
+                welcomeTitle: "Selamat Datang ke Wealth Grow",
+                welcomeDesc: "Tingkatkan kekayaan anda dengan pelaburan selamat dalam saham dan crypto. Pengurusan profesional dan keuntungan yang telus.",
+                getStarted: "Mulakan",
+
+                // Features Section
+                whyChoose: "Mengapa Pilih Wealth Grow?",
+                secureInvestments: "Pelaburan Selamat",
+                secureDesc: "Keselamatan gred bank untuk semua pelaburan anda.",
+                highReturns: "Pulangan Tinggi",
+                returnsDesc: "Pertumbuhan keuntungan yang kompetitif untuk pelaburan anda.",
+                easyWithdrawals: "Pengeluaran Mudah",
+                withdrawalsDesc: "Keluarkan pelaburan matang anda dengan lancar.",
+
+                // Government Approval
+                govtApproved: "Pelaburan Diluluskan Kerajaan",
+                govtDesc: "Pelaburan diluluskan oleh Kerajaan Malaysia",
+                officialReg: "Pendaftaran Rasmi",
+
+                // Footer
+                copyright: "Wealth Grow. Hak cipta terpelihara."
+            },
+            ta: {
+                // Navigation
+                home: "Mukapatta Peyar",
+                login: "Ullanam",
+                help: "Utavi",
+
+                // Hero Section
+                welcomeTitle: "Wealth Grow il Ullanam",
+                welcomeDesc: "Sahamgalum crypto il pasumaiyaana mothalgalalum ungal varamai valarntu kollungal. Thunaiyaana nirmalamum telivaana labhamum.",
+                getStarted: "Thodangal",
+
+                // Features Section
+                whyChoose: "Wealth Grow ai Enna Yetpa?",
+                secureInvestments: "Pasumaiyaana Mothalgal",
+                secureDesc: "Ungal mothalgal anaithukum bank gred pasumai.",
+                highReturns: "Adik Labham",
+                returnsDesc: "Ungal mothalgalukku adik labham valarchchi.",
+                easyWithdrawals: "Eliaana Eduppu",
+                withdrawalsDesc: "Ungal mothalgal valarntha pinnam eliaana eduppu.",
+
+                // Government Approval
+                govtApproved: "Ariyamai Alutha Mothal",
+                govtDesc: "Malaysia ariyamai alutha mothal",
+                officialReg: "Ariyamai Pattu",
+
+                // Footer
+                copyright: "Wealth Grow. Hakkural anaithum patukappattu ullana."
+            }
+        };
+
+        // Language switching functionality
+        let currentLanguage = 'en';
+
+        function initLanguageSystem() {
+            // Load saved language preference
+            const savedLang = localStorage.getItem('wealthgrow_language') || 'en';
+            switchLanguage(savedLang);
+
+            // Language selector functionality
+            const currentLangBtn = document.getElementById('current-lang');
+            const langDropdown = document.getElementById('lang-dropdown');
+            const langOptions = document.querySelectorAll('.lang-option');
+
+            // Toggle dropdown
+            currentLangBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                langDropdown.classList.toggle('active');
+            });
+
+            // Language selection
+            langOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    switchLanguage(lang);
+                    langDropdown.classList.remove('active');
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!currentLangBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+                    langDropdown.classList.remove('active');
+                }
+            });
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('wealthgrow_language', lang);
+
+            // Update language button
+            const currentLangBtn = document.getElementById('current-lang');
+            const langCode = lang === 'en' ? 'EN' : lang === 'ms' ? 'MY' : 'TA';
+            currentLangBtn.querySelector('span').textContent = langCode;
+
+            // Apply translations
+            applyTranslations(lang);
+
+            // Update HTML lang attribute
+            document.documentElement.lang = lang === 'ms' ? 'ms' : lang === 'ta' ? 'ta' : 'en';
+        }
+
+        function applyTranslations(lang) {
+            const t = translations[lang];
+
+            // Update navigation
+            const navLinks = document.querySelectorAll('nav ul li a');
+            if (navLinks.length >= 3) {
+                navLinks[0].textContent = t.home;
+                navLinks[1].textContent = t.login;
+                navLinks[2].textContent = t.help;
+            }
+
+            // Update mobile menu
+            const mobileLinks = document.querySelectorAll('.mobile-menu a');
+            if (mobileLinks.length >= 3) {
+                mobileLinks[0].textContent = t.home;
+                mobileLinks[1].textContent = t.login;
+                mobileLinks[2].textContent = t.help;
+            }
+
+            // Update hero section
+            const heroTitle = document.querySelector('.hero h1');
+            const heroDesc = document.querySelector('.hero p');
+            const getStartedBtn = document.querySelector('.hero .btn');
+
+            if (heroTitle) heroTitle.textContent = t.welcomeTitle;
+            if (heroDesc) heroDesc.textContent = t.welcomeDesc;
+            if (getStartedBtn) getStartedBtn.textContent = t.getStarted;
+
+            // Update features section
+            const featuresTitle = document.querySelector('.features h2');
+            const featureTitles = document.querySelectorAll('.feature h3');
+            const featureDescs = document.querySelectorAll('.feature p');
+
+            if (featuresTitle) featuresTitle.textContent = t.whyChoose;
+
+            if (featureTitles.length >= 3) {
+                featureTitles[0].textContent = t.secureInvestments;
+                featureTitles[1].textContent = t.highReturns;
+                featureTitles[2].textContent = t.easyWithdrawals;
+            }
+
+            if (featureDescs.length >= 3) {
+                featureDescs[0].textContent = t.secureDesc;
+                featureDescs[1].textContent = t.returnsDesc;
+                featureDescs[2].textContent = t.withdrawalsDesc;
+            }
+
+            // Update government approval section
+            const approvalTitle = document.querySelector('.approval-content h3');
+            const approvalDesc = document.querySelector('.approval-content p');
+            const approvalBadge = document.querySelector('.approval-badge span');
+
+            if (approvalTitle) approvalTitle.textContent = t.govtApproved;
+            if (approvalDesc) approvalDesc.textContent = t.govtDesc;
+            if (approvalBadge) approvalBadge.textContent = t.officialReg;
+
+            // Update footer
+            const footerText = document.querySelector('.footer-content p');
+            if (footerText) {
+                const year = new Date().getFullYear();
+                footerText.innerHTML = `&copy; ${year} Wealth Grow. ${t.copyright}`;
+            }
+        }
+
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initLanguageSystem();
+        });
+    </script>
+</body>
+</html>

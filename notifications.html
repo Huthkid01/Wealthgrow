@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Wealth Grow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Wealth Grow</div>
+            <div class="nav-right">
+                <div class="language-selector">
+                    <button class="lang-btn" id="current-lang">
+                        <i class="fas fa-globe"></i>
+                        <span>EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="#" class="lang-option" data-lang="en">
+                            <span class="flag">🇺🇸</span>
+                            <span class="lang-text">English</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ms">
+                            <span class="flag">🇲🇾</span>
+                            <span class="lang-text">Bahasa Melayu</span>
+                        </a>
+                        <a href="#" class="lang-option" data-lang="ta">
+                            <span class="flag">🇮🇳</span>
+                            <span class="lang-text">தமிழ் (Tamil)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <svg class="hamburger-svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" fill="#FFD700"/>
+                    </svg>
+                    <svg class="x-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="#FFD700"/>
+                    </svg>
+                </div>
+            </div>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="withdrawal.html">Withdraw</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="withdrawal.html">Withdraw</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="#" id="mobile-logout">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        <section class="notifications-section">
+            <h1>Your Notifications</h1>
+            <div id="notifications-container">
+                <!-- Notifications will be loaded here -->
+                <div class="loading-state">
+                    <div class="loader"></div>
+                    <p>Loading notifications...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="withdrawal.html">Withdraw</a>
+                <a href="notifications.html">Notifications</a>
+                <a href="help.html">Help</a>
+                <a href="#" id="logout">Logout</a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Wealth Grow. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Load notifications when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Check if user is logged in via localStorage if currentUser is not set
+            if (!currentUser) {
+                const storedUser = JSON.parse(localStorage.getItem('wealthgrow_user'));
+                if (storedUser) {
+                    currentUser = storedUser;
+                }
+            }
+
+            if (currentUser) {
+                loadFullNotificationsPage();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Load full notifications for the dedicated page
+        async function loadFullNotificationsPage() {
+            try {
+                const { data: notifications, error } = await supabaseClient
+                    .from('notifications')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const container = document.getElementById('notifications-container');
+
+                if (!notifications || notifications.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div style="text-align: center; padding: 3rem;">
+                                <div style="font-size: 4rem; margin-bottom: 1rem;">🔔</div>
+                                <h3>No Notifications Yet</h3>
+                                <p>You don't have any notifications at the moment.</p>
+                                <p>Notifications will appear here when your balance changes or withdrawals are processed.</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let notificationsHTML = `<div class="notifications-list-full">`;
+
+                notifications.forEach(notification => {
+                    const typeClass = notification.type || 'info';
+                    const typeIcon = {
+                        'success': '✅',
+                        'warning': '⚠️',
+                        'error': '❌',
+                        'info': 'ℹ️'
+                    }[typeClass] || '🔔';
+
+                    notificationsHTML += `
+                        <div class="notification-item-full ${notification.is_read ? 'read' : 'unread'} ${typeClass}">
+                            <div class="notification-header-full">
+                                <div class="notification-icon">${typeIcon}</div>
+                                <div class="notification-meta">
+                                    <h4>${notification.title}</h4>
+                                    <small>${new Date(notification.created_at).toLocaleDateString()} ${new Date(notification.created_at).toLocaleTimeString()}</small>
+                                </div>
+                                ${!notification.is_read ? '<span class="unread-badge">New</span>' : ''}
+                            </div>
+                            <div class="notification-content">
+                                <p>${notification.message}</p>
+                            </div>
+                            ${!notification.is_read ? `<div class="notification-actions">
+                                <button class="btn-small" onclick="markNotificationRead('${notification.id}')">Mark as Read</button>
+                            </div>` : ''}
+                        </div>
+                    `;
+                });
+
+                notificationsHTML += `</div>`;
+                container.innerHTML = notificationsHTML;
+
+            } catch (err) {
+                document.getElementById('notifications-container').innerHTML = `
+                    <div class="error-state">
+                        <div style="text-align: center; padding: 3rem; color: #f44336;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+                            <h3>Error Loading Notifications</h3>
+                            <p>There was an error loading your notifications. Please try again later.</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+hen
