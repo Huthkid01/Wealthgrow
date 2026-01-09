@@ -13,7 +13,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #121212; /* Dark background */
+    background-color: #121212; /* Dark background 
     color: #ffffff; /* White text */
     line-height: 1.6;
     font-weight: 400;
@@ -978,6 +978,133 @@ select {
     font-size: 1.1rem;
 }
 
+/* Testimonials Section */
+.testimonials {
+    margin: 4rem 0;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(33, 150, 243, 0.05));
+}
+
+.testimonials h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #FFD700;
+    font-size: 2rem;
+    position: relative;
+}
+
+.testimonials h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #FFD700, #FFA000);
+    border-radius: 2px;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.testimonial-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 4rem;
+    color: rgba(255, 215, 0, 0.1);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-avatar {
+    flex-shrink: 0;
+}
+
+.testimonial-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    object-fit: cover;
+}
+
+.testimonial-info {
+    flex: 1;
+}
+
+.testimonial-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: #FFD700;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.testimonial-rating {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.testimonial-rating i {
+    color: #FFD700;
+    font-size: 0.9rem;
+}
+
+.testimonial-text {
+    color: #E0E0E0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    position: relative;
+    z-index: 2;
+}
+
+.testimonial-investment {
+    border-top: 1px solid rgba(255, 215, 0, 0.2);
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.testimonial-investment small {
+    color: #FFD700;
+    font-weight: 600;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+}
+
 /* Government Approval Section */
 .approval-section {
     margin: 3rem 0;
@@ -993,13 +1120,13 @@ select {
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
-    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
 .approval-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.2);
     border-color: #FFD700;
 }
 
