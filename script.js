@@ -1490,7 +1490,19 @@ async function loadUserData() {
 
         loadNotificationCount();
         loadNotifications();
-        loadWithdrawalHistory();
+
+        // Wait for the withdrawal history element to be available
+        const waitForWithdrawalHistory = () => {
+            const withdrawalHistory = document.getElementById('withdrawal-history');
+            if (withdrawalHistory) {
+                loadWithdrawalHistory();
+            } else {
+                // Retry after a short delay if element not found
+                setTimeout(waitForWithdrawalHistory, 50);
+            }
+        };
+        waitForWithdrawalHistory();
+
         startRealTimeUpdates();
 
         // Load investment growth chart
