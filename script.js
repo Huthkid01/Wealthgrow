@@ -1,3 +1,6 @@
+// Show loader immediately when script loads
+showPageLoader();
+
 // Supabase Configuration
 const SUPABASE_URL = CONFIG.SUPABASE.URL;
 const SUPABASE_ANON_KEY = CONFIG.SUPABASE.ANON_KEY;
@@ -61,6 +64,19 @@ function hidePageLoader() {
         setTimeout(() => {
             loader.remove();
         }, 300);
+    }
+}
+
+// Function to hide loader after all data is loaded
+async function hideLoaderAfterDataLoad() {
+    try {
+        // Wait for any pending operations to complete
+        // This ensures all data loading is done before hiding loader
+        await new Promise(resolve => setTimeout(resolve, 500));
+        hidePageLoader();
+    } catch (err) {
+        // Hide loader even if there's an error
+        hidePageLoader();
     }
 }
 
@@ -1992,13 +2008,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         return; // Stop loading if in maintenance mode
     }
 
-    // Show loading animation
-    showPageLoader();
-
-    // Hide loader after page loads (simulate loading time)
-    setTimeout(() => {
-        hidePageLoader();
-    }, 1500);
+    // Hide loader only after all data is loaded
+    await hideLoaderAfterDataLoad();
 
     // Check if user is logged in
     const user = JSON.parse(localStorage.getItem('wealthgrow_user'));
