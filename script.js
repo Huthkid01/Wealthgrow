@@ -1427,6 +1427,83 @@ function applyTranslations(lang) {
     if (loginBtn) loginBtn.textContent = t.loginBtn;
 }
 
+// Countdown timer variables
+let countdownInterval = null;
+
+// Initialize countdown timer
+function initCountdownTimer() {
+    if (!currentUser) return;
+
+    // Calculate estimated completion time based on investment amount
+    const investedAmount = currentUser.invested_amount || 0;
+
+    // Base time: 30 minutes for RM200, scale up/down based on investment
+    const baseAmount = 200;
+    const baseMinutes = 30;
+    const calculatedMinutes = Math.max(15, Math.min(120, (investedAmount / baseAmount) * baseMinutes));
+
+    // Add some randomness (±15 minutes) to make it feel more realistic
+    const randomVariation = (Math.random() - 0.5) * 30; // -15 to +15 minutes
+    const finalMinutes = Math.max(15, calculatedMinutes + randomVariation);
+
+    // Calculate completion time from investment start date or now
+    const completionTime = new Date();
+    completionTime.setMinutes(completionTime.getMinutes() + finalMinutes);
+
+    startCountdown(completionTime);
+}
+
+// Start countdown timer
+function startCountdown(targetTime) {
+    // Clear any existing countdown
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+
+    const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = targetTime.getTime() - now;
+
+        if (distance <= 0) {
+            // Investment completed
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            document.getElementById('completion-message').textContent = '🎉 Investment Completed!';
+            document.getElementById('progress-bar').style.width = '100%';
+
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+
+            // Create completion notification
+            createUserNotification(currentUser.id, 'Investment Completed!', 'Congratulations! Your investment has been completed and funds are now available.', 'success');
+            return;
+        }
+
+        // Calculate time components
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Update display
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+        // Calculate progress percentage
+        const totalDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+        const elapsed = (2 * 60 * 60 * 1000) - distance;
+        const progressPercent = Math.min(95, Math.max(5, (elapsed / totalDuration) * 100));
+        document.getElementById('progress-bar').style.width = progressPercent + '%';
+    };
+
+    // Update immediately
+    updateCountdown();
+
+    // Update every second
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
+
 // Load user data for dashboard
 async function loadUserData() {
     if (!currentUser) return;
@@ -1518,6 +1595,9 @@ async function loadUserData() {
             }
         };
         waitForWithdrawalHistory();
+
+        // Initialize countdown timer
+        initCountdownTimer();
 
         startRealTimeUpdates();
 
