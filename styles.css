@@ -1185,23 +1185,47 @@ select {
     }
 
     .testimonial-header {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
         gap: 1rem;
+        justify-content: flex-start;
+    }
+
+    .testimonial-avatar {
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+
+    .testimonial-avatar img {
+        width: 50px;
+        height: 50px;
     }
 
     .testimonial-info h4 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .testimonial-rating {
+        margin-top: 0.25rem;
     }
 
     .testimonial-text {
         font-size: 0.95rem;
         line-height: 1.5;
+        margin-top: 1rem;
+    }
+
+    .testimonial-investment {
+        margin-top: 1rem;
+        text-align: left;
     }
 
     .testimonial-investment small {
         font-size: 0.85rem;
         padding: 0.4rem 0.8rem;
+        display: inline-block;
     }
 }
 
