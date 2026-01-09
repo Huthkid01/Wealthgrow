@@ -1501,7 +1501,12 @@ async function loadUserData() {
 
 // Load withdrawal history for user dashboard
 async function loadWithdrawalHistory() {
-    if (!currentUser) return;
+    if (!currentUser) {
+        console.log('loadWithdrawalHistory: No current user');
+        return;
+    }
+
+    console.log('loadWithdrawalHistory: Starting for user:', currentUser.id);
 
     try {
         const { data: withdrawals, error } = await supabaseClient
@@ -1511,13 +1516,22 @@ async function loadWithdrawalHistory() {
             .order('request_date', { ascending: false })
             .limit(10);
 
-        if (error) throw error;
+        if (error) {
+            console.error('loadWithdrawalHistory: Supabase error:', error);
+            throw error;
+        }
+
+        console.log('loadWithdrawalHistory: Retrieved withdrawals:', withdrawals);
 
         const withdrawalHistory = document.getElementById('withdrawal-history');
-        if (!withdrawalHistory) return;
+        if (!withdrawalHistory) {
+            console.error('loadWithdrawalHistory: withdrawal-history element not found');
+            return;
+        }
 
         if (!withdrawals || withdrawals.length === 0) {
             withdrawalHistory.innerHTML = '<p>No withdrawal history yet.</p>';
+            console.log('loadWithdrawalHistory: No withdrawals found');
             return;
         }
 
@@ -1552,8 +1566,13 @@ async function loadWithdrawalHistory() {
         });
 
         withdrawalHistory.innerHTML = html;
+        console.log('loadWithdrawalHistory: Successfully loaded', withdrawals.length, 'withdrawals');
     } catch (err) {
-        document.getElementById('withdrawal-history').innerHTML = '<p>Error loading withdrawal history.</p>';
+        console.error('loadWithdrawalHistory: Error occurred:', err);
+        const withdrawalHistory = document.getElementById('withdrawal-history');
+        if (withdrawalHistory) {
+            withdrawalHistory.innerHTML = '<p style="color: #f44336;">Error loading withdrawal history. Please refresh the page.</p>';
+        }
     }
 }
 
