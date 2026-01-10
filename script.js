@@ -1538,10 +1538,15 @@ const translations = {
 let currentLanguage = 'en';
 
 function initLanguageSystem() {
+    // Initialize language system for all pages except admin
     if (window.location.pathname.includes('admin')) return;
 
     const savedLang = localStorage.getItem('wealthgrow_language') || 'en';
-    if (savedLang !== 'en') applyTranslations(savedLang);
+
+    // Apply saved language immediately
+    if (savedLang !== 'en') {
+        applyTranslations(savedLang);
+    }
 
     const currentLangBtn = document.getElementById('current-lang');
     if (currentLangBtn) {
@@ -1561,7 +1566,8 @@ function initLanguageSystem() {
         langOptions.forEach(option => {
             option.addEventListener('click', function(e) {
                 e.preventDefault();
-                switchLanguage(this.getAttribute('data-lang'));
+                const selectedLang = this.getAttribute('data-lang');
+                switchLanguage(selectedLang);
                 langDropdown.classList.remove('active');
             });
         });
