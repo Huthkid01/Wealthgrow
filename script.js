@@ -1,6 +1,3 @@
-// Show loader immediately when script loads
-showPageLoader();
-
 // Supabase Configuration
 const SUPABASE_URL = CONFIG.SUPABASE.URL;
 const SUPABASE_ANON_KEY = CONFIG.SUPABASE.ANON_KEY;
@@ -19,42 +16,30 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Page loader functions - moved to top to fix ReferenceError
+// Page loader functions - HTML is now in templates
 function showPageLoader() {
-    const existingLoader = document.getElementById('page-loader');
-    if (existingLoader) return;
+    const loader = document.getElementById('page-loader');
+    if (!loader) return;
 
-    const loader = document.createElement('div');
-    loader.id = 'page-loader';
-    loader.innerHTML = `
-        <div class="page-loader-overlay">
-            <div class="page-loader-content">
-                <div class="page-loader-spinner">
-                    <div class="spinner-ring"></div>
-                    <div class="spinner-ring"></div>
-                    <div class="spinner-ring"></div>
-                    <div class="spinner-ring"></div>
-                </div>
-                <div class="page-loader-text">Loading Wealth Grow...</div>
-                <div class="page-loader-progress">
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(loader);
+    // Make sure loader is visible immediately
+    loader.style.display = 'block';
+    loader.style.opacity = '1';
+    loader.style.visibility = 'visible';
 
     // Animate progress bar
     const progressBar = loader.querySelector('.progress-bar');
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-        }
-        progressBar.style.width = progress + '%';
-    }, 200);
+    if (progressBar) {
+        progressBar.style.width = '0%'; // Reset progress bar
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+            }
+            progressBar.style.width = progress + '%';
+        }, 200);
+    }
 }
 
 function hidePageLoader() {
@@ -2480,6 +2465,9 @@ function showMaintenancePage() {
 
 // DOM ready
 document.addEventListener('DOMContentLoaded', async function() {
+    // Show loader immediately when DOM is ready
+    showPageLoader();
+
     // Check maintenance mode first for user pages
     const isMaintenance = await checkMaintenanceMode();
     if (isMaintenance) {
