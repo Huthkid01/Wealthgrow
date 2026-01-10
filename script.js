@@ -1346,25 +1346,192 @@ function closeMobileNotifications() {
 // Language translations
 const translations = {
     en: {
-        home: "Home", login: "Login", help: "Help", dashboard: "Dashboard", logout: "Logout",
+        // Navigation
+        home: "Home", login: "Login", help: "Help", dashboard: "Dashboard", logout: "Logout", withdraw: "Withdraw", notifications: "Notifications",
+
+        // Dashboard
+        welcomeMessage: "Your Investment Dashboard",
+        currentBalance: "Current Balance",
+        investedAmount: "Invested",
+        investmentProgress: "Investment Progress",
+        targetAmount: "Target",
+        totalEarnings: "Earnings",
+        investmentGrowing: "Your investment is growing!",
+        investmentStatus: "Investment Status",
+        active: "Active",
+        progress: "Progress",
+        started: "Started",
+        estimatedCompletionTime: "Estimated Completion Time",
+        hours: "Hours", minutes: "Minutes", seconds: "Seconds",
+        investmentProcessing: "Your investment is being processed...",
+        accountReady: "🎉 Account Ready for Withdrawals!",
+        investmentGrowthChart: "Investment Growth Chart",
+        recentWithdrawalHistory: "Recent Withdrawal History",
+
+        // Login
         welcomeTitle: "Welcome to Wealth Grow", welcomeDesc: "Grow your wealth with secure investments.",
         getStarted: "Get Started", loginTitle: "Login to Your Account",
         username: "Username:", password: "Password:", rememberMe: "Remember me", loginBtn: "Login",
+
+        // Withdrawal
+        withdrawalTitle: "Withdrawal Request",
+        amount: "Amount:", submitWithdrawal: "Submit Withdrawal",
+        withdrawalSubmitted: "Withdrawal request submitted!",
+        insufficientBalance: "Insufficient balance. You have",
+        available: "available.",
+        pleaseLogin: "Please login first",
+        waitingPeriod: "Your account is still in the waiting period. You can make withdrawals in",
+        minutes: "minutes.",
+
+        // Admin Panel
+        adminLogin: "Admin Login", adminEmail: "Email:", adminPassword: "Password:",
+        loginAsAdmin: "Login as Admin", createUser: "Create New User",
+        newName: "Name:", newUsername: "Username:", newPassword: "Password:",
+        phone: "Phone:", currency: "Currency:", investedAmountLabel: "Invested Amount:",
+        bankName: "Bank Name:", accountNumber: "Account Number:", accountName: "Account Holder Name:",
+        createUserBtn: "Create User", userCreated: "User created successfully!",
+        totalUsers: "Total Users", activeInvestments: "Active Investments",
+        pendingWithdrawals: "Pending Withdrawals", totalProfits: "Total Profits",
+        users: "Users", investments: "Investments", withdrawals: "Withdrawals",
+        id: "ID", name: "Name", status: "Status", date: "Date", actions: "Actions",
+        viewProfile: "View Profile", delete: "Delete", approve: "Approve", reject: "Reject", setFee: "Set Fee",
+        completed: "Completed", pending: "Pending", feeRequired: "Fee Required", rejected: "Rejected",
+
+        // Alerts and Messages
+        operationFailed: "Operation failed", invalidCredentials: "Invalid credentials",
+        loginFailed: "Login failed. Please try again.", failedToLoad: "Failed to load",
+        balanceIncreased: "Balance increased by", balanceDecreased: "Balance decreased by",
+        withdrawalApproved: "Withdrawal approved!", withdrawalRejected: "Withdrawal rejected!",
+        feeSet: "Fee set successfully.", userDeleted: "User deleted successfully",
+
+        // Footer
         copyright: "Wealth Grow. All rights reserved."
     },
     ms: {
-        home: "Laman Utama", login: "Log Masuk", help: "Bantuan", dashboard: "Papan Pemuka", logout: "Log Keluar",
-        welcomeTitle: "Selamat Datang ke Wealth Grow", welcomeDesc: "Tingkatkan kekayaan anda.",
+        // Navigation
+        home: "Laman Utama", login: "Log Masuk", help: "Bantuan", dashboard: "Papan Pemuka",
+        logout: "Log Keluar", withdraw: "Pengeluaran", notifications: "Pemberitahuan",
+
+        // Dashboard
+        welcomeMessage: "Papan Pemuka Pelaburan Anda",
+        currentBalance: "Baki Semasa",
+        investedAmount: "Dilaburkan",
+        investmentProgress: "Kemajuan Pelaburan",
+        targetAmount: "Sasaran",
+        totalEarnings: "Pendapatan",
+        investmentGrowing: "Pelaburan anda sedang berkembang!",
+        investmentStatus: "Status Pelaburan",
+        active: "Aktif",
+        progress: "Kemajuan",
+        started: "Bermula",
+        estimatedCompletionTime: "Anggaran Masa Selesai",
+        hours: "Jam", minutes: "Minit", seconds: "Saat",
+        investmentProcessing: "Pelaburan anda sedang diproses...",
+        accountReady: "🎉 Akaun Sedia untuk Pengeluaran!",
+        investmentGrowthChart: "Carta Pertumbuhan Pelaburan",
+        recentWithdrawalHistory: "Sejarah Pengeluaran Terkini",
+
+        // Login
+        welcomeTitle: "Selamat Datang ke Wealth Grow", welcomeDesc: "Tingkatkan kekayaan anda dengan pelaburan selamat.",
         getStarted: "Mulakan", loginTitle: "Log Masuk ke Akaun Anda",
         username: "Nama Pengguna:", password: "Kata Laluan:", rememberMe: "Ingat saya", loginBtn: "Log Masuk",
+
+        // Withdrawal
+        withdrawalTitle: "Permintaan Pengeluaran",
+        amount: "Jumlah:", submitWithdrawal: "Hantar Pengeluaran",
+        withdrawalSubmitted: "Permintaan pengeluaran dihantar!",
+        insufficientBalance: "Baki tidak mencukupi. Anda mempunyai",
+        available: "tersedia.",
+        pleaseLogin: "Sila log masuk dahulu",
+        waitingPeriod: "Akaun anda masih dalam tempoh menunggu. Anda boleh membuat pengeluaran dalam",
+        minutes: "minit.",
+
+        // Admin Panel
+        adminLogin: "Log Masuk Admin", adminEmail: "Emel:", adminPassword: "Kata Laluan:",
+        loginAsAdmin: "Log Masuk sebagai Admin", createUser: "Cipta Pengguna Baru",
+        newName: "Nama:", newUsername: "Nama Pengguna:", newPassword: "Kata Laluan:",
+        phone: "Telefon:", currency: "Mata Wang:", investedAmountLabel: "Jumlah Pelaburan:",
+        bankName: "Nama Bank:", accountNumber: "Nombor Akaun:", accountName: "Nama Pemegang Akaun:",
+        createUserBtn: "Cipta Pengguna", userCreated: "Pengguna berjaya dicipta!",
+        totalUsers: "Jumlah Pengguna", activeInvestments: "Pelaburan Aktif",
+        pendingWithdrawals: "Pengeluaran Menunggu", totalProfits: "Jumlah Keuntungan",
+        users: "Pengguna", investments: "Pelaburan", withdrawals: "Pengeluaran",
+        id: "ID", name: "Nama", status: "Status", date: "Tarikh", actions: "Tindakan",
+        viewProfile: "Lihat Profil", delete: "Padam", approve: "Luluskan", reject: "Tolak", setFee: "Tetapkan Yuran",
+        completed: "Selesai", pending: "Menunggu", feeRequired: "Yuran Diperlukan", rejected: "Ditolak",
+
+        // Alerts and Messages
+        operationFailed: "Operasi gagal", invalidCredentials: "Kelayakan tidak sah",
+        loginFailed: "Log masuk gagal. Sila cuba lagi.", failedToLoad: "Gagal dimuatkan",
+        balanceIncreased: "Baki meningkat sebanyak", balanceDecreased: "Baki berkurang sebanyak",
+        withdrawalApproved: "Pengeluaran diluluskan!", withdrawalRejected: "Pengeluaran ditolak!",
+        feeSet: "Yuran ditetapkan berjaya.", userDeleted: "Pengguna berjaya dipadamkan",
+
+        // Footer
         copyright: "Wealth Grow. Hak cipta terpelihara."
     },
     ta: {
-        home: "Mukapatta Peyar", login: "Ullanam", help: "Utavi", dashboard: "Kutchi", logout: "Veliyeru",
-        welcomeTitle: "Wealth Grow il Ullanam", welcomeDesc: "Ungal varamai valarntu kollungal.",
-        getStarted: "Thodangal", loginTitle: "Ungal Kanaakku Ullanam",
-        username: "Pangali Peyar:", password: "Kural Kod:", rememberMe: "Ennai Ninarungal", loginBtn: "Ullanam",
-        copyright: "Wealth Grow. Hakkural anaithum."
+        // Navigation
+        home: "முகப்பு பக்கம்", login: "உள்நுழைவு", help: "உதவி", dashboard: "கட்டுப்பாட்டு அறை",
+        logout: "வெளியேறு", withdraw: "எடுப்பு", notifications: "அறிவிப்புகள்",
+
+        // Dashboard
+        welcomeMessage: "உங்கள் முதலீட்டு கட்டுப்பாட்டு அறை",
+        currentBalance: "தற்போதைய இருப்பு",
+        investedAmount: "முதலீடு செய்யப்பட்டது",
+        investmentProgress: "முதலீட்டு முன்னேற்றம்",
+        targetAmount: "இலக்கு",
+        totalEarnings: "வருமானம்",
+        investmentGrowing: "உங்கள் முதலீடு வளர்ந்து வருகிறது!",
+        investmentStatus: "முதலீட்டு நிலை",
+        active: "செயலில்",
+        progress: "முன்னேற்றம்",
+        started: "தொடங்கப்பட்டது",
+        estimatedCompletionTime: "கணிக்கப்பட்ட நிறைவு நேரம்",
+        hours: "மணி", minutes: "நிமிடங்கள்", seconds: "வினாடிகள்",
+        investmentProcessing: "உங்கள் முதலீடு செயலாக்கப்படுகிறது...",
+        accountReady: "🎉 கணக்கு எடுப்புக்கு தயாராக உள்ளது!",
+        investmentGrowthChart: "முதலீட்டு வளர்ச்சி விளக்கப்படம்",
+        recentWithdrawalHistory: "சமீபத்திய எடுப்பு வரலாறு",
+
+        // Login
+        welcomeTitle: "Wealth Grow இல் வரவேற்கிறோம்", welcomeDesc: "பாதுகாப்பான முதலீடுகளுடன் உங்கள் செல்வத்தை வளர்த்திடுங்கள்.",
+        getStarted: "தொடங்கு", loginTitle: "உங்கள் கணக்கில் உள்நுழையவும்",
+        username: "பயனர் பெயர்:", password: "கடவுச்சொல்:", rememberMe: "என்னை நினைவில் வையுங்கள்", loginBtn: "உள்நுழையவும்",
+
+        // Withdrawal
+        withdrawalTitle: "எடுப்பு கோரிக்கை",
+        amount: "தொகை:", submitWithdrawal: "எடுப்பை சமர்ப்பிக்கவும்",
+        withdrawalSubmitted: "எடுப்பு கோரிக்கை சமர்ப்பிக்கப்பட்டது!",
+        insufficientBalance: "போதுமான இருப்பு இல்லை. உங்களுக்கு உள்ளது",
+        available: "கிடைக்கிறது.",
+        pleaseLogin: "முதலில் உள்நுழையவும்",
+        waitingPeriod: "உங்கள் கணக்கு இன்னும் காத்திருப்பு காலத்தில் உள்ளது. நீங்கள் எடுப்பை செய்யலாம்",
+        minutes: "நிமிடங்களில்.",
+
+        // Admin Panel
+        adminLogin: "நிர்வாகி உள்நுழைவு", adminEmail: "மின்னஞ்சல்:", adminPassword: "கடவுச்சொல்:",
+        loginAsAdmin: "நிர்வாகியாக உள்நுழையவும்", createUser: "புதிய பயனரை உருவாக்கு",
+        newName: "பெயர்:", newUsername: "பயனர் பெயர்:", newPassword: "கடவுச்சொல்:",
+        phone: "தொலைபேசி:", currency: "நாணயம்:", investedAmountLabel: "முதலீட்டுத் தொகை:",
+        bankName: "வங்கி பெயர்:", accountNumber: "கணக்கு எண்:", accountName: "கணக்கு வைத்திருப்பவரின் பெயர்:",
+        createUserBtn: "பயனரை உருவாக்கு", userCreated: "பயனர் வெற்றிகரமாக உருவாக்கப்பட்டார்!",
+        totalUsers: "மொத்த பயனர்கள்", activeInvestments: "செயலில் உள்ள முதலீடுகள்",
+        pendingWithdrawals: "நிலுவையில் உள்ள எடுப்புகள்", totalProfits: "மொத்த லாபங்கள்",
+        users: "பயனர்கள்", investments: "முதலீடுகள்", withdrawals: "எடுப்புகள்",
+        id: "அடையாளம்", name: "பெயர்", status: "நிலை", date: "தேதி", actions: "நடவடிக்கைகள்",
+        viewProfile: "சுயவிவரத்தைப் பார்க்க", delete: "நீக்கு", approve: "அங்கீகரி", reject: "நிராகரி", setFee: "கட்டணத்தை அமை",
+        completed: "நிறைவு", pending: "நிலுவை", feeRequired: "கட்டணம் தேவை", rejected: "நிராகரிக்கப்பட்டது",
+
+        // Alerts and Messages
+        operationFailed: "செயல்பாடு தோல்வியடைந்தது", invalidCredentials: "தவறான சான்றுகள்",
+        loginFailed: "உள்நுழைவு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.", failedToLoad: "ஏற்றுவதில் தோல்வி",
+        balanceIncreased: "இருப்பு அதிகரித்தது", balanceDecreased: "இருப்பு குறைந்தது",
+        withdrawalApproved: "எடுப்பு அங்கீகரிக்கப்பட்டது!", withdrawalRejected: "எடுப்பு நிராகரிக்கப்பட்டது!",
+        feeSet: "கட்டணம் வெற்றிகரமாக அமைக்கப்பட்டது.", userDeleted: "பயனர் வெற்றிகரமாக நீக்கப்பட்டார்",
+
+        // Footer
+        copyright: "Wealth Grow. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டுள்ளன."
     }
 };
 
@@ -1425,6 +1592,7 @@ function applyTranslations(lang) {
     const t = translations[lang];
     if (!t) return;
 
+    // Navigation
     const navLinks = document.querySelectorAll('nav ul li a');
     if (navLinks.length >= 3) {
         navLinks[0].textContent = t.home;
@@ -1432,6 +1600,95 @@ function applyTranslations(lang) {
         navLinks[2].textContent = t.help;
     }
 
+    // Mobile navigation
+    const mobileLinks = document.querySelectorAll('.mobile-menu a');
+    if (mobileLinks.length >= 3) {
+        mobileLinks[0].textContent = t.home;
+        mobileLinks[1].textContent = t.login;
+        mobileLinks[2].textContent = t.help;
+    }
+
+    // Dashboard elements
+    const welcomeMessage = document.getElementById('welcome-message');
+    if (welcomeMessage) welcomeMessage.textContent = t.welcomeMessage;
+
+    const currentBalanceCard = document.querySelector('.wallet-card h3');
+    if (currentBalanceCard) currentBalanceCard.textContent = t.currentBalance;
+
+    const investedAmountEl = document.getElementById('invested-amount');
+    if (investedAmountEl) {
+        const amount = investedAmountEl.textContent.split(': ')[1];
+        investedAmountEl.textContent = `${t.investedAmount}: ${amount}`;
+    }
+
+    const investmentProgressCard = document.querySelector('.dashboard-grid .card:nth-child(2) h3');
+    if (investmentProgressCard) investmentProgressCard.textContent = t.investmentProgress;
+
+    const targetAmountEl = document.getElementById('target-amount');
+    if (targetAmountEl) {
+        const amount = targetAmountEl.textContent.split(': ')[1];
+        targetAmountEl.textContent = `${t.targetAmount}: ${amount}`;
+    }
+
+    const totalEarningsEl = document.getElementById('total-earnings');
+    if (totalEarningsEl) {
+        const amount = totalEarningsEl.textContent.split(': ')[1];
+        totalEarningsEl.textContent = `${t.totalEarnings}: ${amount}`;
+    }
+
+    const investmentGrowingText = document.querySelector('.dashboard-grid .card:nth-child(2) p:last-child');
+    if (investmentGrowingText && investmentGrowingText.textContent.includes('growing')) {
+        investmentGrowingText.textContent = t.investmentGrowing;
+    }
+
+    const investmentStatusCard = document.querySelector('.dashboard-grid .card:nth-child(3) h3');
+    if (investmentStatusCard) investmentStatusCard.textContent = t.investmentStatus;
+
+    const investmentStatusEl = document.getElementById('investment-status');
+    if (investmentStatusEl) {
+        const status = investmentStatusEl.textContent.toLowerCase();
+        if (status === 'active') investmentStatusEl.textContent = t.active;
+        else if (status === 'completed') investmentStatusEl.textContent = t.completed;
+    }
+
+    const progressEl = document.getElementById('investment-progress');
+    if (progressEl) {
+        const progressText = progressEl.textContent.split(': ')[1];
+        progressEl.textContent = `${t.progress}: ${progressText}`;
+    }
+
+    const startedEl = document.getElementById('investment-date');
+    if (startedEl) {
+        const date = startedEl.textContent.split(': ')[1];
+        startedEl.textContent = `${t.started}: ${date}`;
+    }
+
+    const countdownCard = document.querySelector('.countdown-card h3');
+    if (countdownCard) countdownCard.textContent = t.estimatedCompletionTime;
+
+    const hoursLabel = document.querySelector('.countdown-label:nth-child(2)');
+    const minutesLabel = document.querySelector('.countdown-label:nth-child(4)');
+    const secondsLabel = document.querySelector('.countdown-label:nth-child(6)');
+    if (hoursLabel) hoursLabel.textContent = t.hours;
+    if (minutesLabel) minutesLabel.textContent = t.minutes;
+    if (secondsLabel) secondsLabel.textContent = t.seconds;
+
+    const completionMessage = document.getElementById('completion-message');
+    if (completionMessage) {
+        if (completionMessage.textContent.includes('processing')) {
+            completionMessage.textContent = t.investmentProcessing;
+        } else if (completionMessage.textContent.includes('Ready')) {
+            completionMessage.textContent = t.accountReady;
+        }
+    }
+
+    const chartTitle = document.querySelector('.chart-container h3');
+    if (chartTitle) chartTitle.textContent = t.investmentGrowthChart;
+
+    const withdrawalHistoryTitle = document.querySelector('.withdrawal-history-section h3');
+    if (withdrawalHistoryTitle) withdrawalHistoryTitle.textContent = t.recentWithdrawalHistory;
+
+    // Login page elements
     const loginTitle = document.querySelector('.login-section h1');
     if (loginTitle) loginTitle.textContent = t.loginTitle;
 
@@ -1443,6 +1700,71 @@ function applyTranslations(lang) {
 
     const loginBtn = document.querySelector('#login-form button[type="submit"]');
     if (loginBtn) loginBtn.textContent = t.loginBtn;
+
+    // Withdrawal page elements
+    const withdrawalTitle = document.querySelector('h1');
+    if (withdrawalTitle && withdrawalTitle.textContent.includes('Request')) {
+        withdrawalTitle.textContent = t.withdrawalTitle;
+    }
+
+    const amountLabel = document.querySelector('label[for="amount"]');
+    if (amountLabel) amountLabel.textContent = t.amount;
+
+    const submitWithdrawalBtn = document.querySelector('#withdrawal-form button[type="submit"]');
+    if (submitWithdrawalBtn) submitWithdrawalBtn.textContent = t.submitWithdrawal;
+
+    // Admin panel elements
+    const adminLoginTitle = document.querySelector('h1');
+    if (adminLoginTitle && adminLoginTitle.textContent.includes('Admin')) {
+        adminLoginTitle.textContent = t.adminLogin;
+    }
+
+    const adminEmailLabel = document.querySelector('label[for="admin-email"]');
+    if (adminEmailLabel) adminEmailLabel.textContent = t.adminEmail;
+
+    const adminPasswordLabel = document.querySelector('label[for="admin-password"]');
+    if (adminPasswordLabel) adminPasswordLabel.textContent = t.adminPassword;
+
+    const adminLoginBtn = document.querySelector('#admin-login-form button[type="submit"]');
+    if (adminLoginBtn) adminLoginBtn.textContent = t.loginAsAdmin;
+
+    // Admin dashboard metrics
+    const totalUsersEl = document.getElementById('total-users');
+    if (totalUsersEl && !totalUsersEl.textContent.includes(' ')) {
+        const count = totalUsersEl.textContent;
+        totalUsersEl.textContent = `${count} ${t.totalUsers}`;
+    }
+
+    const activeInvestmentsEl = document.getElementById('active-investments');
+    if (activeInvestmentsEl && !activeInvestmentsEl.textContent.includes(' ')) {
+        const count = activeInvestmentsEl.textContent;
+        activeInvestmentsEl.textContent = `${count} ${t.activeInvestments}`;
+    }
+
+    const pendingWithdrawalsEl = document.getElementById('pending-withdrawals');
+    if (pendingWithdrawalsEl && !pendingWithdrawalsEl.textContent.includes(' ')) {
+        const count = pendingWithdrawalsEl.textContent;
+        pendingWithdrawalsEl.textContent = `${count} ${t.pendingWithdrawals}`;
+    }
+
+    // Table headers
+    const tableHeaders = document.querySelectorAll('th');
+    tableHeaders.forEach(header => {
+        const text = header.textContent.trim();
+        if (text === 'ID') header.textContent = t.id;
+        else if (text === 'Name') header.textContent = t.name;
+        else if (text === 'Username') header.textContent = t.username;
+        else if (text === 'Status') header.textContent = t.status;
+        else if (text === 'Date') header.textContent = t.date;
+        else if (text === 'Actions') header.textContent = t.actions;
+    });
+
+    // Footer
+    const footerText = document.querySelector('.footer-content p');
+    if (footerText) {
+        const year = new Date().getFullYear();
+        footerText.innerHTML = `&copy; ${year} Wealth Grow. ${t.copyright}`;
+    }
 }
 
 // Countdown timer variables
@@ -1847,7 +2169,7 @@ function startRealTimeUpdates() {
 async function handleWithdrawal(e) {
     e.preventDefault();
     if (!currentUser) {
-        await showAlert('Please login first', 'warning');
+        await showAlert(t.pleaseLogin, 'warning');
         return;
     }
 
@@ -1861,21 +2183,21 @@ async function handleWithdrawal(e) {
         if (unlockDate > new Date()) {
             // Still waiting period
             const remainingMinutes = Math.ceil((unlockDate - new Date()) / (1000 * 60));
-            await showAlert(`Your account is still in the waiting period. You can make withdrawals in ${remainingMinutes} minutes.`, 'warning');
+            await showAlert(`${t.waitingPeriod} ${remainingMinutes} ${t.minutes}.`, 'warning');
             return;
         }
     }
 
     const amount = parseFloat(document.getElementById('amount').value);
     if (!amount || amount <= 0) {
-        await showAlert('Please enter a valid amount', 'warning');
+        await showAlert(translations[currentLanguage]?.insufficientBalance || 'Please enter a valid amount', 'warning');
         return;
     }
 
     // Check if user has sufficient balance
     const currentBalance = currentUser.current_balance || 0;
     if (amount > currentBalance) {
-        await showAlert(`Insufficient balance. You have ${getCurrencySymbol(currentUser.currency)}${currentBalance.toFixed(2)} available.`, 'error');
+        await showAlert(`${translations[currentLanguage]?.insufficientBalance || 'Insufficient balance'}. ${translations[currentLanguage]?.available || 'You have'} ${getCurrencySymbol(currentUser.currency)}${currentBalance.toFixed(2)} ${translations[currentLanguage]?.available || 'available'}.`, 'error');
         return;
     }
 
