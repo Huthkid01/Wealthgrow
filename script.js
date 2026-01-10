@@ -63,6 +63,8 @@ function hidePageLoader() {
         loader.style.opacity = '0';
         setTimeout(() => {
             loader.remove();
+            // Show the body content after loader is hidden
+            document.body.classList.add('loaded');
         }, 300);
     }
 }
