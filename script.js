@@ -389,6 +389,10 @@ async function handleCreateUser(e) {
         // Generate unique user ID for regular users (no Supabase Auth needed)
         const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
+        // Calculate withdrawal unlock time (30 minutes from now)
+        const withdrawalUnlockTime = new Date();
+        withdrawalUnlockTime.setMinutes(withdrawalUnlockTime.getMinutes() + 30);
+
         // Insert into users table directly (regular users don't use Supabase Auth)
         const { data: user, error: userError } = await supabaseClient
             .from('users')
@@ -410,23 +414,26 @@ async function handleCreateUser(e) {
 
         if (userError) throw userError;
 
-        // Create investment record
+        // Create investment record with active status (waiting period)
         const { error: invError } = await supabaseClient
             .from('investments')
             .insert({
                 user_id: userId,
                 invested_amount: userData.invested_amount,
                 target_amount: userData.target_amount,
-                status: 'completed',
+                status: 'active', // Active during 30-minute waiting period
                 investment_date: new Date().toISOString(),
-                completion_date: new Date().toISOString()
+                completion_date: null // Will be set when timer completes
             });
 
         if (invError) throw invError;
 
+        // Store the withdrawal unlock time for this user
+        localStorage.setItem(`wealthgrow_withdrawal_unlock_${userId}`, withdrawalUnlockTime.toISOString());
+
         // Success message
         document.getElementById('create-user-message').textContent =
-            `User created successfully! Username: ${userData.username}, Password: ${userData.password}, Target: ${userData.currency}${userData.target_amount}`;
+            `User created successfully! Username: ${userData.username}, Password: ${userData.password}, Target: ${userData.currency}${userData.target_amount}. Account will be ready for withdrawals in 30 minutes.`;
         document.getElementById('create-user-message').style.color = '#4CAF50';
 
         // Reset form
@@ -436,7 +443,7 @@ async function handleCreateUser(e) {
         loadAdminData();
 
         // Send welcome notification
-        await createUserNotification(userId, 'Welcome to Wealth Grow!', `Welcome ${userData.name}! Your investment of ${userData.currency}${userData.invested_amount} has been activated. Your target is ${userData.currency}${userData.target_amount}.`, 'success');
+        await createUserNotification(userId, 'Welcome to Wealth Grow!', `Welcome ${userData.name}! Your investment of ${userData.currency}${userData.invested_amount} has been activated. Please wait 30 minutes before making withdrawals.`, 'success');
 
     } catch (err) {
         document.getElementById('create-user-message').textContent = 'Failed to create user: ' + err.message;
@@ -754,6 +761,12 @@ async function handleLogout() {
     }
 
     try {
+        // Clear stored completion time for current user
+        if (currentUser) {
+            const storageKey = `wealthgrow_completion_time_${currentUser.id}`;
+            localStorage.removeItem(storageKey);
+        }
+
         // Clear user session
         localStorage.removeItem('wealthgrow_user');
         currentUser = null;
@@ -773,6 +786,11 @@ async function handleLogout() {
         }
     } catch (err) {
         // Fallback: clear session and redirect anyway
+        if (currentUser) {
+            const storageKey = `wealthgrow_completion_time_${currentUser.id}`;
+            localStorage.removeItem(storageKey);
+        }
+
         localStorage.removeItem('wealthgrow_user');
         currentUser = null;
         isAdmin = false;
@@ -1434,23 +1452,53 @@ let countdownInterval = null;
 function initCountdownTimer() {
     if (!currentUser) return;
 
-    // Calculate estimated completion time based on investment amount
-    const investedAmount = currentUser.invested_amount || 0;
+    const userId = currentUser.id;
+    const storageKey = `wealthgrow_withdrawal_unlock_${userId}`;
 
-    // Base time: 30 minutes for RM200, scale up/down based on investment
-    const baseAmount = 200;
-    const baseMinutes = 30;
-    const calculatedMinutes = Math.max(15, Math.min(120, (investedAmount / baseAmount) * baseMinutes));
+    // Check if we have a stored withdrawal unlock time
+    let unlockTime = localStorage.getItem(storageKey);
 
-    // Add some randomness (±15 minutes) to make it feel more realistic
-    const randomVariation = (Math.random() - 0.5) * 30; // -15 to +15 minutes
-    const finalMinutes = Math.max(15, calculatedMinutes + randomVariation);
+    if (unlockTime) {
+        unlockTime = new Date(unlockTime);
+        // Check if the unlock time has already passed
+        if (unlockTime <= new Date()) {
+            // Timer already completed, remove from storage and update investment status
+            localStorage.removeItem(storageKey);
 
-    // Calculate completion time from investment start date or now
-    const completionTime = new Date();
-    completionTime.setMinutes(completionTime.getMinutes() + finalMinutes);
+            // Update investment status to completed in database
+            updateInvestmentStatus(userId, 'completed');
 
-    startCountdown(completionTime);
+            return; // Don't start timer
+        }
+    } else {
+        // No unlock time found - this shouldn't happen for new accounts
+        // but we'll handle it gracefully
+        return;
+    }
+
+    startCountdown(unlockTime);
+}
+
+// Update investment status in database
+async function updateInvestmentStatus(userId, status) {
+    try {
+        // Update the most recent investment for this user
+        const { error } = await supabaseClient
+            .from('investments')
+            .update({
+                status: status,
+                completion_date: status === 'completed' ? new Date().toISOString() : null
+            })
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+        if (error) {
+            console.error('Error updating investment status:', error);
+        }
+    } catch (err) {
+        console.error('Error updating investment status:', err);
+    }
 }
 
 // Start countdown timer
@@ -1469,11 +1517,16 @@ function startCountdown(targetTime) {
             document.getElementById('hours').textContent = '00';
             document.getElementById('minutes').textContent = '00';
             document.getElementById('seconds').textContent = '00';
-            document.getElementById('completion-message').textContent = '🎉 Investment Completed!';
+            document.getElementById('completion-message').textContent = '🎉 Account Ready for Withdrawals!';
             document.getElementById('progress-bar').style.width = '100%';
 
             clearInterval(countdownInterval);
             countdownInterval = null;
+
+            // Clear stored withdrawal unlock time
+            const userId = currentUser.id;
+            const storageKey = `wealthgrow_withdrawal_unlock_${userId}`;
+            localStorage.removeItem(storageKey);
 
             // Create completion notification
             createUserNotification(currentUser.id, 'Investment Completed!', 'Congratulations! Your investment has been completed and funds are now available.', 'success');
@@ -1796,6 +1849,21 @@ async function handleWithdrawal(e) {
     if (!currentUser) {
         await showAlert('Please login first', 'warning');
         return;
+    }
+
+    // Check if withdrawal is unlocked (30 minutes have passed)
+    const userId = currentUser.id;
+    const storageKey = `wealthgrow_withdrawal_unlock_${userId}`;
+    const unlockTime = localStorage.getItem(storageKey);
+
+    if (unlockTime) {
+        const unlockDate = new Date(unlockTime);
+        if (unlockDate > new Date()) {
+            // Still waiting period
+            const remainingMinutes = Math.ceil((unlockDate - new Date()) / (1000 * 60));
+            await showAlert(`Your account is still in the waiting period. You can make withdrawals in ${remainingMinutes} minutes.`, 'warning');
+            return;
+        }
     }
 
     const amount = parseFloat(document.getElementById('amount').value);
